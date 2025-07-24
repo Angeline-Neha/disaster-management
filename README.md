@@ -61,7 +61,7 @@ For demonstration purposes, you can log in using the default administrator accou
 **Email**: admin@gmail.com
 **Password**: admin123
 
-
+---
 
 ## Setup Instructions
 
