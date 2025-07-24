@@ -45,13 +45,13 @@ A Flask-based web application designed to streamline disaster management through
 
 ###  User Side Features
 
-1. A dedicated interface with separate login for general users.
-2. Users can **report disasters**, specifying type, date, and affected area.
-3. Users can **view a list of all reported emergencies** and related data like victims, aid, and teams.
-4. Allows users to **register and manage victim information**.
-5. Prevents duplicate entries for the same disaster using **smart constraints**.
-6. Secure form submissions with **CSRF protection** and input validation.
-7. Users are notified of important actions via flash messages.
+* A dedicated interface with separate login for general users.
+* Users can **report disasters**, specifying type, date, and affected area.
+* Users can **view a list of all reported emergencies** and related data like victims, aid, and teams.
+* Allows users to **register and manage victim information**.
+* Prevents duplicate entries for the same disaster using **smart constraints**.
+* Secure form submissions with **CSRF protection** and input validation.
+* Users are notified of important actions via flash messages.
 
 ---
 
