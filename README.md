@@ -1,7 +1,7 @@
 
 # Centralized Emergency Response System
 
-A Flask-based web application designed to streamline disaster management through real-time incident reporting, multi-stakeholder coordination, and intelligent resource allocation. Featuring role-based access control (Admin/User), dynamic inventory management and automated alert systems, this solution leverages SQLAlchemy for efficient data handling and Jinja2 templating for responsive interfaces. The platform reduces emergency response times by centralizing victim data, optimizing relief distribution, and providing actionable dashboards for all authorized stakeholders.
+A Flask-based web application designed to streamline disaster management through real-time incident reporting, multi-stakeholder coordination and intelligent resource allocation. Featuring role-based access control (Admin/User), dynamic inventory management and automated alert systems, this solution leverages SQLAlchemy for efficient data handling and Jinja2 templating for responsive interfaces. The platform reduces emergency response times by centralizing victim data, optimizing relief distributiona and providing actionable dashboards for all authorized stakeholders.
 
 ---
 
