@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Reporting System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a0035; /* Deep burgundy */
+            --primary-light: #f8e8f0;
+            --secondary: #2c3e50;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --text: #212529;
+            --text-light: #6c757d;
+            --border: #e9ecef;
+            --light: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 640px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .report-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(90, 0, 53, 0.1);
+        }
+
+        .form-note {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: -0.25rem;
+        }
+
+        .btn {
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a002c;
+        }
+
+        .footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Disaster Incident Report</h1>
+        </div>
+        
+        <div class="content">
+            
+
+            <form method="POST" action="{{ url_for('report_disaster') }}" class="report-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="disaster_type">Disaster Type</label>
+                    <input type="text" id="disaster_type" name="disaster_type" placeholder="e.g., Earthquake, Flood" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="start_date">Incident Date</label>
+                    <input type="date" id="start_date" name="start_date" max="{{ current_date }}" required>
+                    <p class="form-note">Maximum allowed date: {{ current_date }}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="affected_area">Affected Area</label>
+                    <input type="text" id="affected_area" name="affected_area" placeholder="Enter city, region or specific location" required>
+                </div>
+
+               
+
+                <button type="submit" class="btn btn-primary">Submit Incident Report</button>
+            </form>
+        </div>
+        
+        <div class="footer">
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                ← Return to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

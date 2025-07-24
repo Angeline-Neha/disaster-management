@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victim Registration | Disaster Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a0035; /* Deep burgundy */
+            --primary-light: #f8e8f0;
+            --secondary: #502c42;
+            --danger: #68052f;
+            --success: #27ae60;
+            --text: #212529;
+            --text-light: #6c757d;
+            --border: #e9ecef;
+            --light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 640px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .victim-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(90, 0, 53, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a002c;
+        }
+
+        .footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Victim Registration</h1>
+        </div>
+        
+        <div class="content">
+            <form method="POST" class="victim-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="first_name" class="required-field">First Name</label>
+                    <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="last_name" class="required-field">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age" class="required-field">Age</label>
+                    <input type="number" id="age" name="age" min="0" max="120" placeholder="Enter age" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" placeholder="Enter last known location">
+                </div>
+
+                <div class="form-group">
+                    <label for="emergency_event_id" class="required-field">Associated Emergency Event</label>
+                    <select id="emergency_event_id" name="emergency_event_id" required>
+                        <option value="" disabled selected>Select an emergency event</option>
+                        {% for event in emergency_events %}
+                            <option value="{{ event.id }}">
+                                {{ event.disaster_type }} ({{ event.start_date }}) - {{ event.affected_area }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register Victim</button>
+            </form>
+        </div>
+        
+        <div class="footer">
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                ← Return to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

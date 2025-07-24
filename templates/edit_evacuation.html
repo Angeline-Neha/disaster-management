@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Evacuation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f9;
+            padding: 40px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #800022;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 100%;
+        }
+        button {
+            background: #800a3f;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #600828;
+        }
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            color: #80003a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .form-control {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-control select,
+        .form-control input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Evacuation Assignment</h1>
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-control">
+            <label for="transport">Transport</label>
+            <input type="text" name="transport" value="{{ evacuation.transport }}" required>
+        </div>
+
+        <div class="form-control">
+            <label for="location">Location</label>
+            <input type="text" name="location" value="{{ evacuation.location }}" required>
+        </div>
+
+        <div class="form-control">
+            <label for="destination">Destination</label>
+            <input type="text" name="destination" value="{{ evacuation.destination }}" required>
+        </div>
+
+        <div class="form-control">
+            <label for="team_id">Rescue Team</label>
+            <select name="team_id" required>
+                {% for team in teams %}
+                    <option value="{{ team.id }}" {% if team.id == evacuation.team_id %}selected{% endif %}>{{ team.team_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-control">
+            <label for="event_id">Emergency Event</label>
+            <select name="event_id" required>
+                {% for event in events %}
+                    <option value="{{ event.id }}" {% if event.id == evacuation.event_id %}selected{% endif %}>
+                        {{ event.disaster_type }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Update Evacuation</button>
+    </form>
+    <a href="{{ url_for('view_evacuations') }}">← Back to Evacuations</a>
+</div>
+</body>
+</html>
+

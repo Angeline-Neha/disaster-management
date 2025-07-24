@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Assignment | Disaster Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a0035; /* Deep burgundy */
+            --primary-light: #f8e8f0;
+            --primary-dark: #4a002c;
+            --secondary: #2c3e50;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --text: #212529;
+            --text-light: #6c757d;
+            --border: #e9ecef;
+            --light: #f8f9fa;
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            background-color: var(--primary);
+            color: white;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .assignment-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .required-field::after {
+            content: " *";
+            color: var(--danger);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(90, 0, 53, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Responsive grid layout */
+        @media (min-width: 640px) {
+            .assignment-form {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-group-full {
+                grid-column: span 2;
+            }
+        }
+
+        /* Ensure select dropdowns are full width on mobile */
+        @media (max-width: 639px) {
+            .form-group {
+                grid-column: span 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Team Assignment</h1>
+        </div>
+        
+        <div class="content">
+            {% with messages = get_flashed_messages(category_filter=['team-error']) %}
+                {% if messages %}
+                    <div class="alert alert-error">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="assignment-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="team_name" class="required-field">Team Name</label>
+                    <input type="text" id="team_name" name="team_name" placeholder="Enter team name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="team_leader" class="required-field">Team Leader</label>
+                    <input type="text" id="team_leader" name="team_leader" placeholder="Enter leader's name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="personnel" class="required-field">Personnel Count</label>
+                    <input type="number" id="personnel" name="personnel" min="1" placeholder="Enter number of personnel" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="equipment">Equipment</label>
+                    <input type="text" id="equipment" name="equipment" placeholder="List equipment (comma separated)">
+                </div>
+
+                <div class="form-group form-group-full">
+                    <label for="task_id" class="required-field">Assigned Task</label>
+                    <select id="task_id" name="task_id" required>
+                        <option value="" disabled selected>Select a task</option>
+                        {% for task in tasks %}
+                            <option value="{{ task.id }}">
+                                {{ task.task_name }} ({{ task.event.disaster_type }} - {{ task.event.affected_area }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group form-group-full">
+                    <label for="ngo_id" class="required-field">Responsible NGO</label>
+                    <select id="ngo_id" name="ngo_id" required>
+                        <option value="" disabled selected>Select an NGO</option>
+                        {% for ngo in ngos %}
+                            <option value="{{ ngo.id }}">{{ ngo.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group form-group-full">
+                    <button type="submit" class="btn btn-primary">Assign Team</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="footer">
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Return to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

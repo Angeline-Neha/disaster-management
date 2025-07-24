@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Disaster</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Swiper CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/swiper/swiper-bundle.min.css"
+  />
+
+  <style>
+    :root {
+      --primary: #5a0035;
+      --primary-light: #f8e8f0;
+      --secondary: #2c3e50;
+      --text: #212529;
+      --text-light: #6c757d;
+      --white: #ffffff;
+      --radius: 8px;
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background:var(--white);
+      color:var(--text);
+    }
+
+    /* Swiper container needs full-screen height */
+    .swiper-container {
+      width: 100%;
+      height: 100vh;
+    }
+
+    /* Each "slide" */
+    .swiper-slide {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .swiper-slide::before {
+      content:"";
+      position:absolute; top:0; left:0; width:100%; height:100%;
+      background:linear-gradient(to bottom,rgba(0,0,0,0.5),rgba(0,0,0,0.5));
+      pointer-events:none;
+    }
+
+    .disaster-image {
+      position:absolute; top:0; left:0; width:100%; height:100%;
+      object-fit:cover; z-index:0;
+    }
+
+    .discovery-content {
+      position:relative; z-index:1;
+      max-width:800px;
+      background:var(--white);
+      border-radius:var(--radius);
+      padding:2rem;
+      box-shadow:var(--shadow-lg);
+      max-height:100%;
+      overflow-y:auto;
+      animation: fadeInUp 0.6s ease both;
+    }
+    .discovery-section {
+  position: relative;
+  height: 100vh; /* instead of min-height */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #000;
+}
+
+    /* Simple fade-up keyframes */
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(30px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    h1 { color:var(--primary); margin-bottom:1rem; font-size:2rem; }
+    h2 { color:var(--secondary); margin-bottom:1rem; font-size:1.25rem; }
+    p { margin-bottom:1.5rem; line-height:1.5; color:var(--text-light); }
+
+    .stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+      gap:1rem;
+      margin-bottom:1.5rem;
+    }
+    .stat-card {
+      background:var(--primary-light);
+      border-radius:var(--radius);
+      padding:1rem;
+      text-align:center;
+      animation: scaleIn 0.5s ease both;
+    }
+    @keyframes scaleIn {
+      from { opacity:0; transform: scale(0.8); }
+      to   { opacity:1; transform: scale(1); }
+    }
+    .stat-number { font-size:1.8rem; font-weight:600; color:var(--primary); }
+    .stat-label  { font-size:0.85rem; color:var(--secondary); margin-top:0.3rem; }
+
+    .prevention-tips {
+      border-left:4px solid var(--primary);
+      padding:1rem;
+      background:var(--white);
+      margin-top:1rem;
+      box-shadow:var(--shadow-lg);
+      animation: fadeInUp 0.6s ease 0.3s both;
+    }
+    .prevention-tips h3 { margin-bottom:0.5rem; color:var(--primary); }
+
+    .video-btn {
+      display:inline-flex; align-items:center;
+      margin-top:1rem; color:var(--primary);
+      font-weight:500; cursor:pointer;
+      animation: fadeInUp 0.6s ease 0.5s both;
+    }
+    .video-btn svg { margin-right:0.5rem; }
+
+    /* Swiper navigation arrows */
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #fff;
+      width: 3rem;
+      height: 3rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+    }
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+      background: rgba(0,0,0,0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slider main container -->
+  <div class="swiper-container">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+
+      <!-- Earthquake Slide -->
+      <div class="swiper-slide">
+        <img class="disaster-image" src="{{ url_for('static',filename='images/earthquake.jpg') }}" alt="Earthquake">
+        <div class="discovery-content">
+          <h1>Earthquake Preparedness</h1>
+          <h2>The Ground Beneath India</h2>
+          <p>Over <strong>3500</strong> quakes are recorded in India each year. Understanding seismic zones and proper drills can save lives.</p>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number" data-target="3500">0</div><div class="stat-label">Annual Quakes</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="50000">0</div><div class="stat-label">People Affected</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="8">0</div><div class="stat-label">Seismic Zones</div></div>
+          </div>
+          <div class="prevention-tips">
+            <h3>Drop, Cover & Hold</h3>
+           <p><strong>Before an Earthquake:</strong></p>
+  <ul>
+    <li>Pack an emergency kit</li>
+    <li>Secure heavy furniture</li>
+    <li>Create a family communication and evacuation plan</li>
+    <li>Practice “Drop, Cover, and Hold On” drills</li>
+  </ul>
+<br>
+  <p><strong>During an Earthquake:</strong></p>
+  <ul>
+    <li>Indoors: Drop, cover, and hold on</li>
+    <li>Outdoors: Move to an open area away from hazards</li>
+    <li>In a vehicle: Stop and stay inside until shaking stops</li>
+  </ul>
+<br>
+  <p><strong>After an Earthquake:</strong></p>
+  <ul>
+    <li>Check for injuries and structural damage</li>
+    <li>Watch for hazards like gas leaks and fires</li>
+    <li>Be prepared for aftershocks</li>
+    <li>Stay informed via emergency alerts</li>
+  </ul>
+          </div>
+          <div class="video-btn" onclick="window.open('https://ndma.gov.in/Natural-Hazards/Earthquakes/Dos-Donts', '_blank')">
+  <svg width="20" height="20" fill="currentColor"><path d="M4 4l12 6-12 6z"/></svg>Read Do's & Don'ts
+</div>
+
+        </div>
+      </div>
+
+      <!-- Cyclone Slide -->
+      <div class="swiper-slide">
+        <img class="disaster-image" src="{{ url_for('static',filename='images/hurricane.jpg') }}" alt="Cyclone">
+        <div class="discovery-content">
+          <h1>Cyclone Preparedness</h1>
+          <h2>India’s Coastal Storms</h2>
+          <p>The Bay of Bengal churns out ~<strong>6</strong> major cyclones annually. Early warning and evacuation plans are critical.</p>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number" data-target="6">0</div><div class="stat-label">Major Cyclones</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="150">0</div><div class="stat-label">Wind km/hr</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="20">0</div><div class="stat-label">Surge ft</div></div>
+          </div>
+          <div class="prevention-tips">
+            <h3>Evacuation Ready</h3>
+             <p><strong>Before a Cyclone:</strong></p>
+  <ul>
+    <li>Pack an emergency kit with food, water, and documents</li>
+    <li>Secure your home and outdoor objects</li>
+    <li>Trim trees and fix loose roof parts</li>
+    <li>Know your evacuation routes and nearest shelter</li>
+    <li>Monitor weather updates from official sources</li>
+  </ul>
+<br>
+  <p><strong>During a Cyclone:</strong></p>
+  <ul>
+    <li>Stay indoors, away from windows and doors</li>
+    <li>Turn off gas and unplug appliances</li>
+    <li>Do not go outside until authorities declare it's safe</li>
+  </ul>
+<br>
+  <p><strong>After a Cyclone:</strong></p>
+  <ul>
+    <li>Wait for the official all-clear before going outside</li>
+    <li>Watch out for fallen power lines and floodwaters</li>
+    <li>Check on neighbors and help where possible</li>
+    <li>Report damage and follow local authority instructions</li>
+  </ul>
+
+          </div>
+          <div class="video-btn" onclick="window.open('https://ndma.gov.in/Natural-Hazards/Cyclone/Dos-Donts', '_blank')">
+  <svg width="20" height="20" fill="currentColor"><path d="M4 4l12 6-12 6z"/></svg>Read Do's & Don'ts
+</div>>
+        </div>
+      </div>
+
+      <!-- Wildfire Slide -->
+      <div class="swiper-slide">
+        <img class="disaster-image" src="{{ url_for('static',filename='images/fire.jpg') }}" alt="Wildfire">
+        <div class="discovery-content">
+          <h1>Wildfire Awareness</h1>
+          <h2>Forest Fires in India</h2>
+          <p>India sees over <strong>15,000</strong> fire incidents yearly. Smoke inhalation is the leading hazard.</p>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number" data-target="15000">0</div><div class="stat-label">Incidents</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="800">0</div><div class="stat-label">°C Flame Temp</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="70">0</div><div class="stat-label">km/hr Spread</div></div>
+          </div>
+          <div class="prevention-tips">
+            <h3>Create Defensible Space</h3>
+             <p><strong>Before a Wildfire:</strong></p>
+  <ul>
+    <li>Create a defensible space by clearing flammable vegetation near your home</li>
+    <li>Prepare an emergency kit and evacuation plan</li>
+    <li>Keep important documents and valuables ready to go</li>
+    <li>Monitor local fire alerts and warnings</li>
+  </ul>
+<br>
+  <p><strong>During a Wildfire:</strong></p>
+  <ul>
+    <li>Evacuate immediately if instructed by authorities</li>
+    <li>Wear protective clothing (long sleeves, mask)</li>
+    <li>Keep windows and doors closed to reduce smoke exposure</li>
+    <li>Listen to emergency broadcasts for updates</li>
+  </ul>
+<br>
+  <p><strong>After a Wildfire:</strong></p>
+  <ul>
+    <li>Return only when officials say it’s safe</li>
+    <li>Watch for hotspots and smoldering debris</li>
+    <li>Avoid damaged structures until inspected</li>
+    <li>Document losses for insurance claims</li>
+  </ul>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Flood Slide -->
+      <div class="swiper-slide">
+        <img class="disaster-image" src="{{ url_for('static',filename='images/flood1.jpg') }}" alt="Flood">
+        <div class="discovery-content">
+          <h1>Flood Preparedness</h1>
+          <h2>Monsoon & Riverine Floods</h2>
+          <p>The Ganges–Brahmaputra basin floods impact <strong>70M</strong> people annually. Elevated homes & barriers save lives.</p>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number" data-target="70">0</div><div class="stat-label">Million Affected</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="12">0</div><div class="stat-label">Inches Water</div></div>
+            <div class="stat-card"><div class="stat-number" data-target="1000">0</div><div class="stat-label">km of Levees</div></div>
+          </div>
+          <div class="prevention-tips">
+            <h3>Stay Above Water</h3>
+            <p><strong>Before a Flood:</strong></p>
+  <ul>
+    <li>Know your flood risk and evacuation routes</li>
+    <li>Prepare an emergency kit and store valuables on higher ground</li>
+    <li>Install check valves in plumbing to prevent backups</li>
+    <li>Keep sandbags ready if in a flood-prone area</li>
+  </ul>
+<br>
+  <p><strong>During a Flood:</strong></p>
+  <ul>
+    <li>Move to higher ground immediately</li>
+    <li>Do not walk or drive through floodwaters</li>
+    <li>Disconnect electrical appliances if safe to do so</li>
+    <li>Listen to weather updates and emergency instructions</li>
+  </ul>
+<br>
+  <p><strong>After a Flood:</strong></p>
+  <ul>
+    <li>Avoid floodwaters, which may be contaminated or electrically charged</li>
+    <li>Do not enter buildings until they are declared safe</li>
+    <li>Clean and disinfect everything that got wet</li>
+    
+  </ul>
+          </div>
+         <div class="video-btn" onclick="window.open('https://ndma.gov.in/Natural-Hazards/Floods/Do-Donts', '_blank')">
+  <svg width="20" height="20" fill="currentColor"><path d="M4 4l12 6-12 6z"/></svg>Read Do's & Don'ts
+</div>
+        </div>
+        
+      </div>
+      
+
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+
+
+    <!-- Navigation arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    // Initialize Swiper
+    const swiper = new Swiper('.swiper-container', {
+      speed: 600,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      autoHeight: true,
+      on: {
+        slideChange: () => {
+          // animate counters on each slide
+          const active = swiper.slides[swiper.activeIndex];
+          active.querySelectorAll('.stat-number').forEach(el => {
+            const target = +el.dataset.target;
+            let count = 0;
+            const step = Math.ceil(target / 100);
+            clearInterval(el._interval);
+            el._interval = setInterval(() => {
+              count += step;
+              if (count >= target) {
+                el.textContent = target;
+                clearInterval(el._interval);
+              } else {
+                el.textContent = count;
+              }
+            }, 20);
+          });
+        }
+      }
+    });
+
+    // Trigger first slide's counters
+    swiper.emit('slideChange');
+  </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Assignments Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a0035; /* Deep burgundy */
+            --primary-light: #f8e8f0;
+            --secondary: #502c3c;
+            --danger: #740939;
+            --text: #212529;
+            --text-light: #6c757d;
+            --border: #e9ecef;
+            --light: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .disaster-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .disaster-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .disaster-title {
+            color: var(--primary);
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .disaster-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .task-section {
+            margin-top: 1.5rem;
+        }
+
+        .task-title {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .team-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .team-item {
+            background-color: var(--light);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .team-name {
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .team-details {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ngo-badge {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+            margin-top: 0.75rem;
+        }
+
+        .btn-danger:hover {
+            background-color: #a50e1a;
+        }
+
+        .empty-state {
+            color: var(--text-light);
+            font-style: italic;
+            padding: 1rem;
+            text-align: center;
+            background-color: var(--light);
+            border-radius: 6px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .disaster-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Team Assignments by Disaster</h1>
+        </div>
+
+        {% for event in events %}
+            <div class="disaster-card">
+                <div class="disaster-header">
+                    <h2 class="disaster-title">
+                        {{ event.disaster_type }} – {{ event.affected_area }}
+                    </h2>
+                    <div class="disaster-date">
+                        {{ event.start_date }}
+                    </div>
+                </div>
+
+                {% if event.tasks %}
+                    {% for task in event.tasks %}
+                        <div class="task-section">
+                            <h3 class="task-title">Task: {{ task.task_name }}</h3>
+                            
+                            {% if task.teams %}
+                                <ul class="team-list">
+                                    {% for team in task.teams %}
+                                        <li class="team-item">
+                                            <div class="team-name">{{ team.team_name }}</div>
+                                            <div class="team-details">
+                                                Leader: {{ team.team_leader }} • 
+                                                Personnel: {{ team.personnel }} • 
+                                                Equipment: {{ team.equipment or 'None' }}
+                                            </div>
+                                            <div class="ngo-badge">
+                                                NGO: {{ team.ngo.name }}
+                                            </div>
+                                            {% if current_user.role == 'admin' %}
+                                            <form method="POST" action="{{ url_for('delete_team', team_id=team.id) }}" style="display:inline;">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this team?')">
+                                                    Delete Team
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="empty-state">
+                                    No teams assigned to this task
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        No tasks created for this disaster yet
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="footer">
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                ← Return to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

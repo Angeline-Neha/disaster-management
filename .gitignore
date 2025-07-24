@@ -1,0 +1,40 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite database file
+*.sqlite3
+*.db
+*.db-journal
+instance/
+*.bak
+
+# Flask env settings
+.env
+*.env
+.env.*
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# VSCode settings (optional)
+.vscode/
+
+# Pytest cache
+.pytest_cache/
+.cache/
+
+# Migrations (optional)
+migrations/
+
+# Logs
+*.log
+
+# Compiled files
+*.so
+*.pyd
+*.dll

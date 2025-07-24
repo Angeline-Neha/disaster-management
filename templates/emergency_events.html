@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Events Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a0035; /* Deep burgundy */
+            --primary-light: #f8e8f0;
+            --secondary: #2c3e50;
+            --danger: #64090f;
+            --text: #212529;
+            --text-light: #6c757d;
+            --border: #e9ecef;
+            --light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            background-color: var(--primary);
+            color: white;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+        }
+
+        .events-table thead th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .events-table tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .events-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .events-table tbody tr:hover {
+            background-color: var(--light);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #a50e1a;
+        }
+
+        .chart-container {
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .chart-header {
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-light);
+            background-color: var(--light);
+            border-radius: 6px;
+        }
+
+        .footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+            }
+            
+            .events-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Emergency Events Management</h1>
+        </div>
+        
+        <div class="content">
+            {% if not events %}
+                <div class="empty-state">
+                    <p>No emergency events found</p>
+                </div>
+            {% else %}
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th>Disaster Type</th>
+                            <th>Start Date</th>
+                            <th>Affected Area</th>
+                            {% if current_user.role == 'admin' %}
+                            <th>Actions</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                        <tr>
+                            <td>{{ event.disaster_type }}</td>
+                            <td>{{ event.start_date}}</td>
+                            <td>{{ event.affected_area }}</td>
+                            {% if current_user.role == 'admin' %}
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_emergency_event', event_id=event.id) }}" style="display:inline;">
+                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="chart-container">
+                    <h3 class="chart-header">Disaster Distribution Overview</h3>
+                    <canvas id="disasterChart"></canvas>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="footer">
+            <a href="{{ url_for('dashboard') }}" class="back-link">
+                ← Return to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const disasterLabels = {{ disaster_labels | tojson }};
+        const disasterCounts = {{ disaster_counts | tojson }};
+        
+    </script>
+    <script src="{{ url_for('static', filename='chart.js') }}"></script>
+
+</body>
+</html>

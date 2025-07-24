@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Response Portal</title>
+    <style>
+        :root {
+            --primary-color: #a91c49;
+            --secondary-color: #74153c;
+            --accent-color: #f5eeee;
+            --background-gradient: linear-gradient(135deg, #44373c 0%, #a7124e 100%);
+            --text-color: #ffffff;
+            --font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+            color: var(--text-color);
+            background: var(--background-gradient);
+            height: 100%;
+        }
+        header {
+            width: 100%;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        header nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        header nav a:hover {
+            color: var(--accent-color);
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 150px 20px 100px;
+            background: url('https://source.unsplash.com/1600x900/?disaster,emergency') center/cover no-repeat;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            animation: fadeInDown 1.2s ease-out;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-in;
+        }
+        .button-container {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 14px 32px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        }
+        .feature-card img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            background: rgba(0, 0, 0, 0.4);
+            position: relative;
+            color: var(--text-color);
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"> Disaster Management System</div>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Centralized Emergency Response & Coordination</h1>
+            <p>Connect, report, and react in real-time to disasters. Empower communities and save lives with streamlined communication and aid distribution.</p>
+            <div class="button-container">
+                <a class="btn" href="/login">🔐 Login</a>
+                <a class="btn" href="/register">📝 Register</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="feature-card">
+            <img src="https://img.icons8.com/ios-filled/100/ffab00/report-card.png" alt="Report Icon" />
+            <h3>Instant Reporting</h3>
+            <p>File and view disaster reports in real-time </p>
+        </div>
+        <div class="feature-card">
+            <img src="https://img.icons8.com/ios-filled/100/ffab00/teamwork.png" alt="Coordination Icon" />
+            <h3>Aid Coordination</h3>
+            <p>Organize volunteers, resources, and NGO's in one unified platform.</p>
+        </div>
+        <div class="feature-card">
+            <img src="https://img.icons8.com/ios-filled/100/ffab00/lifebuoy.png" alt="Rescue Icon" />
+            <h3>Rescue Operations</h3>
+            <p>Track rescue units, assign tasks, and monitor progress seamlessly.</p>
+        </div>
+        <div class="feature-card">
+            <img src="https://img.icons8.com/ios-filled/100/ffab00/combo-chart.png" alt="Analytics Icon" />
+            <h3>Data Analytics</h3>
+            <p>Gain insights from incident trends and response performance with interactive dashboards.</p>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Disaster Response Initiative. All Rights Reserved.
+    </footer>
+</body>
+</html>
+
+

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Management | View Donations</title>
+    <style>
+        :root {
+            --primary: #5f1136;
+            --secondary: #860d4b;
+            --accent: #74163b;
+            --light: #f8f9fa;
+            --border: #e9ecef;
+            --text: #292123;
+            --text-light: #6c757d;
+            --danger: #730523;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .donation-form {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 6px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.25rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .donation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .donation-table thead {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .donation-table th {
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .donation-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .donation-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .donation-table tr:hover {
+            background-color: var(--light);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-light);
+            background-color: var(--light);
+            border-radius: 6px;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .donation-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Donation Records</h1>
+
+        <div class="donation-form">
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Donor Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">Donation Type</label>
+                        <input type="text" id="type" name="type" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input type="number" id="amount" name="amount" required min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ngo_id">Beneficiary NGO</label>
+                        <select id="ngo_id" name="ngo_id" required>
+                            {% for ngo in ngos %}
+                                <option value="{{ ngo.id }}">{{ ngo.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Donation</button>
+            </form>
+        </div>
+
+        {% if donations %}
+            <table class="donation-table">
+                <thead>
+                    <tr>
+                        <th>Donor</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>NGO</th>
+                        {% if current_user.role == 'admin' %}
+                        <th>Actions</th>
+                         {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donation in donations %}
+                        <tr>
+                            <td>{{ donation.name }}</td>
+                            <td>{{ donation.type }}</td>
+                            <td>₹{{ donation.amount }}</td>
+                            <td>
+                                {% if donation.ngo %}
+                                    {{ donation.ngo.name }}
+                                {% else %}
+                                    <span style="color: var(--text-light)">Unassigned</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if current_user.role == 'admin' %}
+                                <form method="POST" action="{{ url_for('delete_donation', donation_id=donation.id) }}" style="display: inline;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn btn-danger" 
+                                        onclick="return confirm('Delete this donation?')">
+                                        Delete
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="empty-state">
+                <p>No donation records found</p>
+            </div>
+        {% endif %}
+
+        <a href="{{ url_for('dashboard') }}" class="back-link">
+            ← Back to Dashboard
+        </a>
+    </div>
+</body>
+</html>
